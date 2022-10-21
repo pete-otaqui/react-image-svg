@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>React SVG Image / Examples / React 18</title>
+  <link rel="stylesheet" href="../styles.css" />
+
+  <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+  <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+
+  <script type="module">
+    import htm from "https://unpkg.com/htm@latest?module";
+    import { renderSvgAsImage, setDomRenderer } from "./react-svg-image.js";
+    const html = htm.bind(React.createElement);
+
+    // You have to supply this
+    async function renderAsPromise(el, domEl) {
+      const container = domEl;
+      const root = ReactDOM.createRoot(container);
+      root.render(el);
+      return new Promise((resolve) => {
+        requestIdleCallback(resolve);
+      });
+    }
+
+    setDomRenderer(renderAsPromise);
+
+    const App = (props) => {
+      const [color, setColor] = React.useState('#ff0000');
+      const [imgSrc, setImgSrc] = React.useState("");
+      const [removeText, setRemoveText] = React.useState(false);
+      const [scale, setScale] = React.useState(2);
+      const [quality, setQuality] = React.useState(0.97);
+      const [format, setFormat] = React.useState('jpeg');
+      const onClick = async () => {
+        const result = await renderSvgAsImage(html`
+          <svg viewBox="0 0 100 100" width="100" height="100" style=${{backgroundColor: "white"}}>
+            <circle
+              cx="50"
+              cy="50"
+              r="40"
+              fill=${color} 
+              stroke="black"
+              strokeDashoffset="100"
+              strokeDasharray="100"
+            />
+            <text
+              class="remove-me"
+              x="50"
+              y="50"
+              text-anchor="middle"
+              alignment-baseline="middle"
+              fill="black"
+              font-size="20"
+            >${color}</text>
+          </svg>
+        `, {
+          ignoreAllSelectors: removeText ? ['.remove-me'] : [],
+          scale,
+          quality,
+          format,
+        });
+        setImgSrc(result);
+      }
+      return html`
+        <div>
+          <div>
+            <label>
+              <input type="color" value=${color} onChange=${e => setColor(e.target.value)} />
+              Choose a colour
+            </label>
+            <label>
+              <input type="number" min=${0.01} max=${100} step=${1} value=${scale} onChange=${e => setScale(Number(e.target.value))} />
+              Set the scale
+            </label>
+            <label>
+              <input type="number" min=${0.01} max=${1} step=${0.01} value=${quality} onChange=${e => setQuality(Number(e.target.value))} />
+              Set the quality (irrelevant for PNG)
+            </label>
+            <label>
+              <select value=${format} onChange=${e => setFormat(e.target.value)}>
+                <option value="jpeg">jpeg</option>
+                <option value="png">png</option>
+                <option value="webp">webp</option>
+              </select>
+              Set the format
+            </label>
+            <label>
+              <input type="checkbox" checked=${removeText} onChange=${e => setRemoveText(e.target.checked)} />
+              Remove text
+            </label>
+            <br />
+            <button onClick=${onClick}>Click to render SVG as image</button>
+          </div>
+          <div>
+            ${imgSrc ?
+              html`<img src=${imgSrc} />` :
+              html`No image source set yet`
+            }
+          </div>
+        </div>
+      `;
+    };
+
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+    root.render(html`<${App} />`);
+  </script>
+</head>
+<body>
+  <div class="container">
+    <h1>React SVG Image / <a href="../">Examples</a> / React 18</h1>
+    <p>To avoid creating a more heavyweight React app example, we are using `htm` to do the JSX-like syntax.</p>
+    <p>Other than that, this is just a normal app.</p>
+    <div id="root"></div>
+  </div>
+</body>
+</html>
