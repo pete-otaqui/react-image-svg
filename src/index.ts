@@ -80,7 +80,7 @@ export async function renderSvgAsImage(
     quality = 0.97,
     throwErrors = true,
     ignoreAllSelectors = [],
-  }: RenderSvgAsImageOptions
+  }: RenderSvgAsImageOptions = {}
 ): Promise<string | Blob> {
   try {
     if (!renderAsPromise) {
