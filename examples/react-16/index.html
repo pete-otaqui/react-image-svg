@@ -12,7 +12,7 @@
 
   <script type="module">
     import htm from "https://unpkg.com/htm@latest?module";
-    import { renderSvgAsImage, setDomRenderer } from "./react-svg-image.js";
+    import { renderSvgAsImage, setDomRenderer } from "./react-svg-image/index.mjs";
     const html = htm.bind(React.createElement);
 
     
@@ -46,13 +46,13 @@
               strokeDasharray="100"
             />
             <text
-              class="remove-me"
+              className="remove-me"
               x="50"
               y="50"
-              text-anchor="middle"
-              alignment-baseline="middle"
+              textAnchor="middle"
+              alignmentBaseline="middle"
               fill="black"
-              font-size="20"
+              fontSize="20"
             >${color}</text>
           </svg>
         `, {

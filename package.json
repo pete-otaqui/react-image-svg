@@ -1,17 +1,25 @@
 {
   "name": "react-svg-image",
-  "version": "1.0.0-alpha.0",
+  "version": "1.0.0",
   "description": "React-compatible conversion of SVG to images",
   "main": "dist/index.js",
-  "type": "module",
+  "module": "dist/index.mjs",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.js"
+    }
+  },
   "repository": "https://github.com/pete-otaqui/react-svg-image",
   "author": "Pete Otaqui <pete@otaqui.com>",
   "license": "MIT",
   "scripts": {
-    "build": "yarn build:src && yarn build:compress && yarn build:examples",
-    "build:compress": "esbuild dist/index.js --bundle --minify --outfile=dist/index.min.js",
-    "build:examples": "cp dist/index.js examples/react-16/react-svg-image.js && cp dist/index.js examples/react-18/react-svg-image.js",
-    "build:src": "tsc -p tsconfig.json",
+    "build": "yarn build:src && yarn build:example-react-16 && build:example-react-18",
+    "build:examples": "yarn build:examples:react-16 && yarn build:examples:react-18",
+    "build:examples:react-16": "copyfiles dist/* examples/react-16/react-svg-image/ -f",
+    "build:examples:react-18": "copyfiles dist/* examples/react-18/react-svg-image/ -f",
+    "build:src": "tsup src/index.ts --format cjs,esm --dts --sourcemap --minify",
     "examples": "http-server examples"
   },
   "peerDependencies": {
@@ -22,10 +30,11 @@
     "@types/react": "^16.x || ^17.x || ^18.x",
     "@typescript-eslint/eslint-plugin": "^5.40.1",
     "@typescript-eslint/parser": "^5.40.1",
-    "esbuild": "^0.15.12",
+    "copyfiles": "^2.4.1",
     "eslint": "^8.25.0",
     "http-server": "^14.1.1",
     "prettier": "^2.7.1",
+    "tsup": "^6.3.0",
     "typescript": "^4.8.4"
   }
 }

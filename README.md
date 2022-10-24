@@ -60,7 +60,11 @@ setDomRenderer(renderAsPromise);
 
 ## Usage
 
-Once you've setup your renderer, you can use the library to convert your SVG
+Once you've added your render function as above, you are ready to use the library.
+
+There are some very lightweight [examples](./examples/) that you can quickly view with `yarn examples` from the root of the repository (note - the examples in that folder are built with "jsx-at-runtime", using `htm`, but the idea is the same in a "normal" react app).
+
+Here's a more standard react app example:
 
 ```javascript
 import React from "react";
