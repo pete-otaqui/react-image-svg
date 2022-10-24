@@ -1,6 +1,6 @@
 {
   "name": "react-svg-image",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "React-compatible conversion of SVG to images",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -13,6 +13,7 @@
   },
   "repository": "https://github.com/pete-otaqui/react-svg-image",
   "author": "Pete Otaqui <pete@otaqui.com>",
+  "keywords": ["react", "svg", "image", "convert", "canvas", "png", "jpg", "jpeg", "webp", "pdf"],
   "license": "MIT",
   "scripts": {
     "build": "yarn build:src && yarn build:example-react-16 && build:example-react-18",
